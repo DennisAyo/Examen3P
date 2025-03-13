@@ -1,39 +1,39 @@
-@Data
-@NoArgsConstructor
+package com.marca.facturacion.modelo;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "FACTURA_DETALLE")
-public class FacturaDetalle implements Serializable {
-
+@Data
+@NoArgsConstructor
+public class FacturaDetalle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COD_DETALLE")
     private Integer codDetalle;
 
     @ManyToOne
-    @JoinColumn(name = "COD_FACTURA", nullable = false)
+    @JoinColumn(name = "COD_FACTURA")
     private Factura factura;
 
-    @NotNull
-    @Column(name = "COD_PRODUCTO", length = 32, nullable = false)
+    @Column(name = "COD_PRODUCTO", length = 32)
     private String codProducto;
 
-    @NotNull
-    @Column(name = "CANTIDAD", precision = 5, scale = 0, nullable = false)
+    @Column(name = "CANTIDAD", precision = 5, scale = 0)
     private BigDecimal cantidad;
 
-    @NotNull
-    @Column(name = "PRECIO_UNITARIO", precision = 10, scale = 2, nullable = false)
+    @Column(name = "PRECIO_UNITARIO", precision = 10, scale = 2)
     private BigDecimal precioUnitario;
 
-    @NotNull
-    @Column(name = "SUBTOTAL", precision = 10, scale = 2, nullable = false)
+    @Column(name = "SUBTOTAL", precision = 10, scale = 2)
     private BigDecimal subtotal;
 
-    @NotNull
-    @Column(name = "IVA", precision = 10, scale = 2, nullable = false)
+    @Column(name = "IVA", precision = 10, scale = 2)
     private BigDecimal iva;
 
-    @NotNull
-    @Column(name = "TOTAL", precision = 10, scale = 2, nullable = false)
+    @Column(name = "TOTAL", precision = 10, scale = 2)
     private BigDecimal total;
 } 

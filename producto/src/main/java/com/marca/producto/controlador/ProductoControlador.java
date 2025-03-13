@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 @Slf4j
 public class ProductoControlador {
     
@@ -22,27 +22,34 @@ public class ProductoControlador {
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<Producto> buscarPorCodigo(@PathVariable String codigo) {
+    public ResponseEntity<ProductoDTO> buscarPorCodigo(@PathVariable String codigo) {
         try {
             return ResponseEntity.ok(servicio.buscarPorCodigo(codigo));
         } catch (RuntimeException e) {
+            log.error("Error al buscar producto: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
-    public ResponseEntity<Producto> crear(@RequestBody Producto producto) {
-        return ResponseEntity.ok(servicio.crear(producto));
+    public ResponseEntity<ProductoDTO> crearProducto(@Valid @RequestBody ProductoDTO producto) {
+        try {
+            return ResponseEntity.ok(servicio.crearProducto(producto));
+        } catch (Exception e) {
+            log.error("Error al crear producto: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{codigo}")
-    public ResponseEntity<Producto> actualizar(
+    public ResponseEntity<ProductoDTO> modificarProducto(
             @PathVariable String codigo, 
-            @RequestBody Producto producto) {
+            @Valid @RequestBody ProductoDTO producto) {
         try {
             producto.setCodProducto(codigo);
-            return ResponseEntity.ok(servicio.actualizar(producto));
+            return ResponseEntity.ok(servicio.modificarProducto(producto));
         } catch (RuntimeException e) {
+            log.error("Error al modificar producto: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }

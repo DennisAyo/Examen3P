@@ -10,20 +10,17 @@ import lombok.extern.slf4j.Slf4j;
 public class FacturacionControlador {
     
     private final FacturacionServicio servicio;
-    private final FacturaMapper mapper;
 
-    public FacturacionControlador(FacturacionServicio servicio, FacturaMapper mapper) {
+    public FacturacionControlador(FacturacionServicio servicio) {
         this.servicio = servicio;
-        this.mapper = mapper;
     }
 
     @PostMapping
-    public ResponseEntity<FacturaDTO> crear(@Valid @RequestBody FacturaDTO dto) {
+    public ResponseEntity<FacturaDTO> crearFactura(@Valid @RequestBody CrearFacturaDTO factura) {
         try {
-            Factura factura = servicio.crearFactura(mapper.toModel(dto));
-            return ResponseEntity.ok(mapper.toDTO(factura));
+            return ResponseEntity.ok(servicio.crearFactura(factura));
         } catch (Exception e) {
-            log.error("Error al crear la factura", e);
+            log.error("Error al crear factura: {}", e.getMessage());
             return ResponseEntity.badRequest().build();
         }
     }

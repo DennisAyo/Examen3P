@@ -1,42 +1,44 @@
-@Data
-@NoArgsConstructor
+package com.marca.facturacion.modelo;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Table(name = "FACTURA")
-public class Factura implements Serializable {
-
+@Data
+@NoArgsConstructor
+public class Factura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COD_FACTURA")
     private Integer codFactura;
 
-    @NotNull
-    @Column(name = "TIPO_IDENTIFICACION", length = 3, nullable = false)
+    @Column(name = "TIPO_IDENTIFICACION", length = 3)
     private String tipoIdentificacion;
 
-    @NotNull
-    @Column(name = "IDENTIFICACION", length = 20, nullable = false)
+    @Column(name = "IDENTIFICACION", length = 20)
     private String identificacion;
 
-    @NotNull
-    @Column(name = "NOMBRE", length = 100, nullable = false)
+    @Column(name = "NOMBRE", length = 100)
     private String nombre;
 
-    @NotNull
-    @Column(name = "FECHA", nullable = false)
+    @Column(name = "FECHA")
     private LocalDateTime fecha;
 
-    @NotNull
-    @Column(name = "SUBTOTAL", precision = 10, scale = 2, nullable = false)
+    @Column(name = "SUBTOTAL", precision = 10, scale = 2)
     private BigDecimal subtotal;
 
-    @NotNull
-    @Column(name = "IVA", precision = 10, scale = 2, nullable = false)
+    @Column(name = "IVA", precision = 10, scale = 2)
     private BigDecimal iva;
 
-    @NotNull
-    @Column(name = "TOTAL", precision = 10, scale = 2, nullable = false)
+    @Column(name = "TOTAL", precision = 10, scale = 2)
     private BigDecimal total;
 
     @OneToMany(mappedBy = "factura", cascade = CascadeType.ALL)
     private List<FacturaDetalle> detalles;
-} 
+}
+

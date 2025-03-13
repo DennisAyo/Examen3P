@@ -10,29 +10,36 @@ import java.util.List;
 public class ProductoServicio {
     
     private final ProductoRepositorio repositorio;
+    private final ProductoMapper mapper;
 
-    public ProductoServicio(ProductoRepositorio repositorio) {
+    public ProductoServicio(ProductoRepositorio repositorio, ProductoMapper mapper) {
         this.repositorio = repositorio;
+        this.mapper = mapper;
     }
 
     public List<Producto> buscarTodos() {
         return repositorio.findAll();
     }
 
-    public Producto buscarPorCodigo(String codigo) {
-        return repositorio.findById(codigo)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    public ProductoDTO buscarPorCodigo(String codigo) {
+        Producto producto = repositorio.findById(codigo)
+            .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + codigo));
+        return mapper.toDTO(producto);
     }
 
-    public Producto crear(Producto producto) {
-        return repositorio.save(producto);
+    public ProductoDTO crearProducto(ProductoDTO productoDTO) {
+        Producto producto = mapper.toEntity(productoDTO);
+        producto = repositorio.save(producto);
+        return mapper.toDTO(producto);
     }
 
-    public Producto actualizar(Producto producto) {
-        if (!repositorio.existsById(producto.getCodProducto())) {
-            throw new RuntimeException("Producto no encontrado");
+    public ProductoDTO modificarProducto(ProductoDTO productoDTO) {
+        if (!repositorio.existsById(productoDTO.getCodProducto())) {
+            throw new RuntimeException("Producto no encontrado: " + productoDTO.getCodProducto());
         }
-        return repositorio.save(producto);
+        Producto producto = mapper.toEntity(productoDTO);
+        producto = repositorio.save(producto);
+        return mapper.toDTO(producto);
     }
 
     public void eliminar(String codigo) {
