@@ -1,3 +1,10 @@
+package com.marca.producto.modelo;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "PRODUCTO")
 @Data
